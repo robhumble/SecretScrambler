@@ -9,21 +9,15 @@ using System.Windows.Forms;
 using System.IO;
 using pinNote.CryptoTool;
 using pinNote.Models;
+using pinNote.Logic;
 
 namespace pinNote
 {
     public partial class NoteWindow : Form
     {
-        public String noteText = string.Empty;
-
-        //public string currentPassword = string.Empty;
+        public string noteText = string.Empty;
 
         public SecurityModel _currentSecurityModel;
-
-
-        //public int currentKey = 0;
-
-        // private iCryptoTool CryptoTool;
 
         private List<iCryptoTool> _currentCryptoTools;
 
@@ -31,78 +25,60 @@ namespace pinNote
         {
             InitializeComponent();
 
-            InitializeSecurityObjects();
-
-            // CryptoTool = new HumbleCryptoTool();// new HumbleCryptoTool();
-            //  MessageBox.Show("this is 33" + Convert.ToChar());
+            InitializeSecurityObjects();           
         }
-
-
-
 
 
         #region Menu: w/ password
 
-        //Open With Pin
+        /// <summary>
+        /// Open With Pin/Password.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DecryptOpen_Click(object sender, EventArgs e)
         {
-
             //open a file browser
             OpenFileDialog openFileBrowser = new OpenFileDialog();
             openFileBrowser.ShowDialog();
 
-
-
-            StreamReader fileReader;
-            String fileText = "";
+            string fileText = string.Empty;
 
             try
             {
-
-
-                fileReader = new StreamReader(openFileBrowser.FileName.ToString());
-                fileText = fileReader.ReadToEnd();
-                fileReader.Close();
+                fileText = GetFileContents(openFileBrowser.FileName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error opening file: " + Environment.NewLine + ex);
+                MessageBox.Show(ex.Message);
+                InitializeSecurityObjects();
+                return;
             }
 
-            //-----------------------------------------------------
-
             keyForm popup = new keyForm();
-
             popup.ShowDialog();
 
-            //switching to password
-            //currentKey = popup.getKey();
-            //currentPassword = popup.getPassword();
             _currentSecurityModel = popup.getSecurityModel();
 
             //build crypto tools based off user input
-            BuildCryptoToolsFromSecurityModel();
-
-
-            // MessageBox.Show("hello world, here's your pin: " + currentKey);
+            _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();
             popup.Dispose();
 
-
-            // String decryptedText = noteDecrypt(fileText);
-            //String decryptedText = CryptoTool.DecryptRun(fileText, currentKey);
-            //String decryptedText = CryptoTool.DecryptRun(fileText, currentPassword);
-
             //use password to decrypt
-            String decryptedText = RunSelectedDecryption(fileText, _currentSecurityModel.Password);
-
+            String decryptedText = CryptoManager.RunSelectedDecryption(_currentCryptoTools, fileText, _currentSecurityModel.Password);
 
             NoteTextBox1.Text = decryptedText;
+
 
             //now that the text has been done reset security state
             InitializeSecurityObjects();
         }
 
-        //Save With Pin
+        /// <summary>
+        /// Save With Pin/Password.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveEncrypt_Click(object sender, EventArgs e)
         {
             try
@@ -110,17 +86,10 @@ namespace pinNote
                 keyForm popup = new keyForm();
 
                 popup.ShowDialog();
-
-
-                //switching to password
-                //currentKey = popup.getKey();
-                //currentPassword = popup.getPassword();
                 _currentSecurityModel = popup.getSecurityModel();
 
                 //build crypto tools based off user input
-                BuildCryptoToolsFromSecurityModel();
-
-                // MessageBox.Show("hello world, here's your pin: " + currentKey);
+                _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();                
                 popup.Dispose();
             }
             catch (Exception ex)
@@ -128,31 +97,30 @@ namespace pinNote
                 MessageBox.Show("popup failed : " + ex);
             }
 
-
             SaveFileDialog saveFileBrowser = new SaveFileDialog();
-            saveFileBrowser.ShowDialog();
+            saveFileBrowser.ShowDialog();           
 
+            string encryptedText = string.Empty;
 
             try
             {
-                StreamWriter fileWriter = new StreamWriter(saveFileBrowser.FileName.ToString());
-                String fileText = "";
-
-                //fileText = CryptoTool.EncryptRun(NoteTextBox1.Text, currentKey);
-                //fileText = CryptoTool.EncryptRun(NoteTextBox1.Text, currentPassword);
-
-                fileText = RunSelectedEncryption(NoteTextBox1.Text, _currentSecurityModel.Password);
-
-
-                fileWriter.Write(fileText);
-                fileWriter.Close();
+                encryptedText = CryptoManager.RunSelectedEncryption(_currentCryptoTools, NoteTextBox1.Text, _currentSecurityModel.Password);
             }
-
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving file: " + Environment.NewLine + ex);
+                MessageBox.Show(ex.Message);
+                InitializeSecurityObjects();
+                return;
             }
 
+            try
+            {
+                WriteTextToFile(saveFileBrowser.FileName, encryptedText);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             //now that the text has been done reset security state
             InitializeSecurityObjects();
@@ -163,216 +131,140 @@ namespace pinNote
 
         #region Menu: w/o password
 
-        //Open w/o pin
+        /// <summary>
+        /// Open w/o pin/password.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenNoEncryption_Click(object sender, EventArgs e)
         {
             //  'open a file browser
             OpenFileDialog openFileBrowser = new OpenFileDialog();
             openFileBrowser.ShowDialog();
 
-
-            //'MessageBox.Show(openFileBrowser.ToString())
-
-            //'populate submission field with file
-            //Dim fileReader As StreamReader = StreamReader.Null
-            //Dim fileText As String
-
-            StreamReader fileReader;
-            String fileText = "";
-
-
-
+            string fileText = string.Empty;
 
             try
             {
-
-
-                fileReader = new StreamReader(openFileBrowser.FileName.ToString());
-                fileText = fileReader.ReadToEnd();
-                fileReader.Close();
+                fileText = GetFileContents(openFileBrowser.FileName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error opening file: " + Environment.NewLine + ex);
+                MessageBox.Show(ex.Message);
             }
-
 
             NoteTextBox1.Text = fileText;
         }
 
-        //Save w/o pin
+        /// <summary>
+        /// Save w/o pin/password
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveNoEncryption_Click(object sender, EventArgs e)
         {
-
-
             SaveFileDialog saveFileBrowser = new SaveFileDialog();
 
-            // saveFileBrowser.AddExtension = True
-            saveFileBrowser.DefaultExt = ".txt";
-
-            // saveFileBrowser.CreatePrompt = True
-            // saveFileBrowser.FileName = "AS_ScriptFile"
-
+            saveFileBrowser.DefaultExt = ".txt";          
             saveFileBrowser.Filter = " Text (*.txt) |*.txt| All Files (*.*) |*.* ";
 
-
-            saveFileBrowser.ShowDialog();
-
-
-
-            // 'MessageBox.Show(openFileBrowser.ToString())
+            saveFileBrowser.ShowDialog();           
 
             try
             {
-                // 'populate submission field with file
-
-                StreamWriter fileWriter = new StreamWriter(saveFileBrowser.FileName.ToString());
-                String fileText = "";
-
-
-                //'fileWriter.
-
-
-
-                fileText = NoteTextBox1.Text;
-                fileWriter.Write(fileText);
-                fileWriter.Close();
+                WriteTextToFile(saveFileBrowser.FileName, NoteTextBox1.Text);
             }
-
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving file: " + Environment.NewLine + ex);
+                MessageBox.Show(ex.Message);
             }
         }
 
         #endregion
 
-
         #region Help Menu
-        //About Message
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        /// <summary>
+        /// Display the "About" message.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("CryptoWriter"
                 + Environment.NewLine + " Created by Robert Humble"
-                + Environment.NewLine + " Contact: rh1269@gmail.com");
+                + Environment.NewLine + " Contact: humbot1@gmail.com");
         }
         #endregion Help Menu
 
 
-
-
         #region Private Helpers
 
-        //Reset/Set objects to null
+        /// <summary>
+        /// Reset/Set objects to null.
+        /// </summary>
         private void InitializeSecurityObjects()
         {
             _currentSecurityModel = new SecurityModel();
             _currentCryptoTools = new List<iCryptoTool>();
         }
 
-
-        private void BuildCryptoToolsFromSecurityModel()
+        /// <summary>
+        /// Read text from a specified file.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private string GetFileContents(string fileName)
         {
-            //in case i don't want to use class var later
-            var securityModel = _currentSecurityModel;
+            if (String.IsNullOrEmpty(fileName))
+                throw new Exception("No File Selected!");
 
-            var cryptoTools = new List<iCryptoTool>();
-
-            if (securityModel.SelectedAES)
-                cryptoTools.Add(new AESCryptoTool());
-
-            if (securityModel.SelectedTripleDES)
-                cryptoTools.Add(new TripleDESCryptoTool());
-
-            if (securityModel.SelectedHumbleCrypt)
-                cryptoTools.Add(new HumbleCryptoTool());
-
-
-            //set the cryptoTools to the current  
-            _currentCryptoTools = cryptoTools;
-        }
-
-        private string RunSelectedEncryption(string message, string password)
-        {
-            string result = message;
+            StreamReader fileReader;
+            String fileText = "";
 
             try
             {
-
-                if (_currentCryptoTools.Count > 0)
-                {
-                    foreach (var tool in _currentCryptoTools)
-                    {
-                        //CATCHING THE ERRORS HERE(on per tool basis) MAY GIVE TOO MUCH INFORMATION AWAY TO THE USER
-
-                        // try
-                        // {
-                        result = tool.EncryptRun(result, password);
-                        // }
-                        // catch (Exception e)
-                        // { 
-                        //     MessageBox.Show("Encryption Failed"
-                        //           + Environment.NewLine + "Failed on Type: " + tool.GetEncryptionType());                               
-                        //}
-
-                    }
-                }
-
+                fileReader = new StreamReader(fileName);
+                fileText = fileReader.ReadToEnd();
+                fileReader.Close();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                MessageBox.Show("Encryption Failed");
+                throw new Exception("Error opening file: " + Environment.NewLine + ex);
             }
 
-            return result;
+            return fileText;
         }
 
-        private string RunSelectedDecryption(string message, string password)
+        /// <summary>
+        /// Write the given text to a file.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="textToWrite"></param>
+        private void WriteTextToFile(string fileName, string textToWrite)
         {
-            string result = message;
-
-            //Reverse The list  
-
-            _currentCryptoTools.Reverse();
-
+            if (string.IsNullOrEmpty(fileName))
+                throw new Exception("No File Selected!");
             try
             {
-
-                if (_currentCryptoTools.Count > 0)
-                {
-                    foreach (var tool in _currentCryptoTools)
-                    {
-                        //CATCHING THE ERRORS HERE(on per tool basis) MAY GIVE TOO MUCH INFORMATION AWAY TO THE USER
-
-                        // try{
-
-                        result = tool.DecryptRun(result, password);
-                        //  }
-                        // catch (Exception e)
-                        // { 
-                        //    MessageBox.Show("Decryption Failed"
-                        //            + Environment.NewLine + "Failed on Type: " + tool.GetEncryptionType());                               
-                        // }
-                    }
-                }
-
+                StreamWriter fileWriter = new StreamWriter(fileName);
+                fileWriter.Write(textToWrite);
+                fileWriter.Close();
             }
-            catch (Exception e)
-            {
-                MessageBox.Show("Decryption Failed"
-                        + Environment.NewLine 
-                        + Environment.NewLine + "Please check your password and selected encryption types.");
+            catch (Exception ex)
+            {               
+                throw new Exception("Error saving file: " + Environment.NewLine + ex);
             }
 
-            return result;
         }
 
-        //Set The Text variable equal to whats present in the main window
-        private void setNoteTextFromTextBox()
+        /// <summary>
+        /// Set The Text variable equal to whats present in the main window.
+        /// </summary>
+        private void SetNoteTextFromTextBox()
         {
             noteText = NoteTextBox1.Text;
         }
-
 
         private void DebugRecorder(String inBound)
         {
@@ -380,14 +272,8 @@ namespace pinNote
 
             if (use)
             {
-
                 StreamWriter fileWriter = File.AppendText("C:\\Users\\Rob\\Desktop\\DebugLog.txt");
                 String fileText = "";
-
-
-                //'fileWriter.
-
-
 
                 fileWriter.WriteLine(inBound);
                 fileWriter.Close();
@@ -395,23 +281,7 @@ namespace pinNote
 
         }
 
-
         #endregion Private Helpers
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
 
 }

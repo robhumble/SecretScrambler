@@ -12,9 +12,6 @@ namespace pinNote
 {
     public partial class keyForm : Form
     {
-       // public int keyProvided = -1;
-        //private string passwordStr;
-
         private SecurityModel _securityModel { get; set; }
 
         public keyForm()
@@ -23,46 +20,29 @@ namespace pinNote
             InitializeComponent();
         }
 
-        //public Int32 getKey()
-        //{
-        //    return keyProvided;
-        //}
-
-        //public string getPassword()
-        //{
-        //    return passwordStr;
-        //}
-
         public SecurityModel getSecurityModel()
         {
             return _securityModel;
         }
 
-
         private void keyButton_Click(object sender, EventArgs e)
         {
+            //Populate Security Model based off user selections
             try
             {
-               // keyProvided = Convert.ToInt32(keyBox.Text);
-                //passwordStr = keyBox.Text;
-
                 _securityModel.Password = keyBox.Text;
                 //Check user selected security checkboxes
                 _securityModel.SelectedAES = AESCheckbox.Checked;
                 _securityModel.SelectedTripleDES = TripleDESCheckbox.Checked;
                 _securityModel.SelectedHumbleCrypt = HumbleCryptCheckbox.Checked;
-
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to capture key.  Error: " + ex);
             }
-            
+
             Hide();
         }
 
-           
     }
 }

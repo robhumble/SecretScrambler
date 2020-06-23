@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace pinNote
+namespace pinNote.Logic
 {
     /// <summary>
     ///Helps transform data, assistance for crypto tools
     /// </summary>
     public static class TransformHelper
     {
-        //Get an integer representation of a password
+        /// <summary>
+        /// Get an integer representation of a password.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static int PasswordStrToKeyInt(string password)
         {
             int returnKey = 0;
@@ -23,25 +27,25 @@ namespace pinNote
             //x=123, but this might work out fine
             foreach (char c in password)
             {
-                int val = (int)Char.GetNumericValue(c);
-            
-                //this logic is not exactly what I wanted, may need to re-evaluate
-                returnKey += (val*(int)Math.Pow(10,x));
+                int val = (int)char.GetNumericValue(c);
 
-               x++;
+                //TODO: this logic is not exactly what I wanted, may need to re-evaluate
+                returnKey += val * (int)Math.Pow(10, x);
+
+                x++;
             }
 
-            
             return returnKey;
         }
 
-
-
-
-        //Ascii byte array - unused
-        public static string asciiEncoder(String textToAscii)
+        /// <summary>
+        /// Ascii byte array - unused
+        /// </summary>
+        /// <param name="textToAscii"></param>
+        /// <returns></returns>
+        public static string AsciiEncoder(string textToAscii)
         {
-            String inAscii = "";
+            string inAscii = "";
             byte[] asciiArray = Encoding.ASCII.GetBytes(textToAscii);
 
             foreach (byte b in asciiArray)
@@ -52,8 +56,12 @@ namespace pinNote
             return inAscii;
         }
 
-        //Get a valid int - unused
-        public static int toValidInt(Int32 number)
+        /// <summary>
+        /// Get a valid int - unused
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ToValidInt(int number)
         {
 
             int validnumber = number;
@@ -82,8 +90,12 @@ namespace pinNote
 
         }
 
-        //get revised key - unused
-        public static int getRevisedKey(int currentKey)
+        /// <summary>
+        /// get revised key - unused
+        /// </summary>
+        /// <param name="currentKey"></param>
+        /// <returns></returns>
+        public static int GetRevisedKey(int currentKey)
         {
             int revisedKey = currentKey;
             /*

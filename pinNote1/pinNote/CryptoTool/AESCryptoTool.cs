@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pinNote.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace pinNote.CryptoTool
     //Based off of example found here: https://msdn.microsoft.com/en-us/library/system.security.cryptography.rijndaelmanaged.aspx
     public class AESCryptoTool : iCryptoTool
     {
-        private readonly string EncryptionType = "AES";
+        private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.AES;
 
         //"salt"
         private byte[] IV = Encoding.ASCII.GetBytes("v95da2y6d8xc3v2r") ; 
@@ -52,18 +53,13 @@ namespace pinNote.CryptoTool
                 }
             }
 
-            return Convert.ToBase64String(encryptionResult);
-            
-            //throw new NotImplementedException();
-           
+            return Convert.ToBase64String(encryptionResult);           
         }
 
 
         public string DecryptRun(string message, string password)
         {
            string decryptionResult = null;
-
-
 
            //message as bytes
            byte[] messageBytes = Convert.FromBase64String(message);// = Encoding.ASCII.GetBytes(message);
@@ -94,14 +90,12 @@ namespace pinNote.CryptoTool
             }
 
             return decryptionResult;
-
-            //throw new NotImplementedException();
         }
 
-        public string GetEncryptionType()
+        public EncryptionTypeEnum GetEncryptionType()
         {
             return EncryptionType;
         }
-        
+
     }
 }

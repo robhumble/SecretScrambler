@@ -1,4 +1,6 @@
-﻿using System;
+﻿using pinNote.Enums;
+using pinNote.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +9,7 @@ namespace pinNote.CryptoTool
 {
     public class HumbleCryptoTool : iCryptoTool
     {
-        private readonly string EncryptionType = "HumbleCrypt";
+        private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.Humble;
 
         public string EncryptRun(string message, string password)
         {
@@ -76,10 +78,10 @@ namespace pinNote.CryptoTool
             return shiftedString;
         }
 
-        public string GetEncryptionType()
+        public EncryptionTypeEnum GetEncryptionType()
         {
             return EncryptionType;
         }
-        
+
     }
 }

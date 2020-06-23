@@ -65,6 +65,7 @@
     <Compile Include="CryptoTool\AESCryptoTool.cs" />
     <Compile Include="CryptoTool\HumbleCryptoTool.cs" />
     <Compile Include="CryptoTool\iCryptoTool.cs" />
+    <Compile Include="Enums\EncryptionTypeEnum.cs" />
     <Compile Include="ExceptionHandling\rhCryptoException.cs" />
     <Compile Include="KeyForm.cs">
       <SubType>Form</SubType>
@@ -72,6 +73,7 @@
     <Compile Include="KeyForm.Designer.cs">
       <DependentUpon>KeyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\CryptoManager.cs" />
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="pinNoteMainForm.cs">
       <SubType>Form</SubType>
@@ -81,7 +83,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransformHelper.cs" />
+    <Compile Include="Logic\TransformHelper.cs" />
     <EmbeddedResource Include="KeyForm.resx">
       <DependentUpon>KeyForm.cs</DependentUpon>
     </EmbeddedResource>

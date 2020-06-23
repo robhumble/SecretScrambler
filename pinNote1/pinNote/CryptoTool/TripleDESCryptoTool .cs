@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pinNote.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace pinNote.CryptoTool
     //Based off of example found here: https://msdn.microsoft.com/en-us/library/system.security.cryptography.rijndaelmanaged.aspx
     public class TripleDESCryptoTool : iCryptoTool
     {
-        private readonly string EncryptionType = "Triple DES";
+        private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.TripleDES;
 
         //"salt"
         //private byte[] IV = Encoding.ASCII.GetBytes("v95da2y6d8xc3v2r");
@@ -96,7 +97,7 @@ namespace pinNote.CryptoTool
             //throw new NotImplementedException();
         }
 
-        public string GetEncryptionType()
+        public EncryptionTypeEnum GetEncryptionType()
         {
             return EncryptionType;
         }
