@@ -43,30 +43,17 @@ namespace pinNote.Logic
 
             try
             {
-
                 if (cryptoTools.Count > 0)
                 {
                     foreach (var tool in cryptoTools)
-                    {
-                        //CATCHING THE ERRORS HERE(on per tool basis) MAY GIVE TOO MUCH INFORMATION AWAY TO THE USER
-
-                        // try
-                        // {
-                        result = tool.EncryptRun(result, password);
-                        // }
-                        // catch (Exception e)
-                        // { 
-                        //     MessageBox.Show("Encryption Failed"
-                        //           + Environment.NewLine + "Failed on Type: " + tool.GetEncryptionType());                               
-                        //}
-
+                    {                       
+                        result = tool.EncryptRun(result, password);                        
                     }
                 }
 
             }
             catch (Exception e)
-            {
-                //MessageBox.Show("Encryption Failed");
+            {               
                 Console.WriteLine("Encryption Failed!");
                 throw e;
             }
@@ -90,32 +77,17 @@ namespace pinNote.Logic
 
             try
             {
-
                 if (cryptoTools.Count > 0)
                 {
                     foreach (var tool in cryptoTools)
-                    {
-                        //CATCHING THE ERRORS HERE(on per tool basis) MAY GIVE TOO MUCH INFORMATION AWAY TO THE USER
-
-                        //try{
-
+                    {                       
                         result = tool.DecryptRun(result, password);
-                        //  }
-                        // catch (Exception e)
-                        // { 
-                        //    MessageBox.Show("Decryption Failed"
-                        //            + Environment.NewLine + "Failed on Type: " + tool.GetEncryptionType());                               
-                        // }
                     }
                 }
 
             }
             catch (Exception e)
-            {
-                //MessageBox.Show("Decryption Failed"
-                //        + Environment.NewLine
-                //        + Environment.NewLine + "Please check your password and selected encryption types.");
-
+            {              
                 Console.WriteLine(
                     "Decryption Failed"
                         + Environment.NewLine

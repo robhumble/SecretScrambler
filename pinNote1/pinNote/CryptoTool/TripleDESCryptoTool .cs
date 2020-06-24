@@ -14,27 +14,25 @@ namespace pinNote.CryptoTool
     {
         private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.TripleDES;
 
-        //"salt"
-        //private byte[] IV = Encoding.ASCII.GetBytes("v95da2y6d8xc3v2r");
-        private byte[] IV = Encoding.ASCII.GetBytes("3d5jxa22"); 
         private int keySize = 192;
-
 
         public string EncryptRun(string message, string password)
         {
-            byte[] encryptionResult; 
+            byte[] encryptionResult;
 
             //message as bytes
             //byte[] messageBytes = Encoding.ASCII.GetBytes(message);
 
-            using(PasswordDeriveBytes pw = new PasswordDeriveBytes(password,IV))
+            var IV = GetCurrentIV();
+
+            using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
             {
-                byte[] pwBytes = pw.GetBytes(keySize/8);
+                byte[] pwBytes = pw.GetBytes(keySize / 8);
 
                 using (TripleDESCryptoServiceProvider TripleDESprovider = new TripleDESCryptoServiceProvider())
                 {
-                   TripleDESprovider.Key = pwBytes;
-                   TripleDESprovider.IV = IV;
+                    TripleDESprovider.Key = pwBytes;
+                    TripleDESprovider.IV = IV;
 
                     ICryptoTransform encryptor = TripleDESprovider.CreateEncryptor(TripleDESprovider.Key, TripleDESprovider.IV);
 
@@ -42,7 +40,7 @@ namespace pinNote.CryptoTool
                     {
                         using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                         {
-                            using(StreamWriter sw = new StreamWriter(cs))
+                            using (StreamWriter sw = new StreamWriter(cs))
                             {
                                 sw.Write(message);
                             }
@@ -53,21 +51,19 @@ namespace pinNote.CryptoTool
             }
 
             return Convert.ToBase64String(encryptionResult);
-            
-            //throw new NotImplementedException();           
         }
 
 
         public string DecryptRun(string message, string password)
         {
-           string decryptionResult = null;
+            string decryptionResult = null;
 
+            //message as bytes
+            byte[] messageBytes = Convert.FromBase64String(message);// = Encoding.ASCII.GetBytes(message);
 
+            var IV = GetCurrentIV();
 
-           //message as bytes
-           byte[] messageBytes = Convert.FromBase64String(message);// = Encoding.ASCII.GetBytes(message);
-
-           using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
+            using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
             {
                 byte[] pwBytes = pw.GetBytes(keySize / 8);
 
@@ -84,23 +80,45 @@ namespace pinNote.CryptoTool
                         {
                             using (StreamReader sr = new StreamReader(cs))
                             {
-                                decryptionResult = sr.ReadToEnd(); 
+                                decryptionResult = sr.ReadToEnd();
                             }
-                           
+
                         }
                     }
                 }
             }
 
             return decryptionResult;
-
-            //throw new NotImplementedException();
         }
 
         public EncryptionTypeEnum GetEncryptionType()
         {
             return EncryptionType;
         }
-        
+
+        public byte[] GetCurrentIV()
+        {
+            var hardCoded = "3d5jxa22";
+
+            var global = Properties.Settings.Default.CustomGlobalIV;
+            var customTripleDES = Properties.Settings.Default.CustomTripleDesIV;
+
+            var ivStr = (!string.IsNullOrEmpty(customTripleDES)) ? customTripleDES : (!string.IsNullOrEmpty(global)) ? global : hardCoded;
+
+            byte[] IV = Encoding.ASCII.GetBytes(ivStr);
+
+            return IV;
+        }
+
+        public string GenerateNewIVString()
+        {
+            var tdes = new TripleDESCryptoServiceProvider();
+            tdes.KeySize = keySize;
+            tdes.GenerateIV();
+
+            var ivStr = Encoding.ASCII.GetString(tdes.IV);
+
+            return ivStr;
+        }
     }
 }

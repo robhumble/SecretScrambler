@@ -25,11 +25,161 @@ namespace pinNote
         {
             InitializeComponent();
 
-            InitializeSecurityObjects();           
+            InitializeSecurityObjects();
         }
 
+        #region Basic Functions - Open, Save, New, Save As
 
-        #region Menu: w/ password
+        /// <summary>
+        /// Prep for window for new text content (Clear).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var confirmWindowResult = MessageBox.Show("Are you sure you want to clear your current session?", "Confirm clear", MessageBoxButtons.YesNo);
+
+            if (confirmWindowResult == DialogResult.Yes)
+            {
+                NoteTextBox1.Text = string.Empty;
+                InitializeSecurityObjects();
+            }         
+        }
+
+        /// <summary>
+        /// Open any file (encrypted or not) and place contents into the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenNoEncryption_Click(object sender, EventArgs e)
+        {
+            //  'open a file browser
+            OpenFileDialog openFileBrowser = new OpenFileDialog();
+            openFileBrowser.ShowDialog();
+
+            string fileText = string.Empty;
+
+            try
+            {
+                fileText = GetFileContents(openFileBrowser.FileName);
+                NoteTextBox1.Text = fileText;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            
+        }
+
+        /// <summary>
+        /// Save current window text.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveNoEncryption_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileBrowser = new SaveFileDialog();
+
+            saveFileBrowser.DefaultExt = ".txt";
+            saveFileBrowser.Filter = " Text (*.txt) |*.txt| All Files (*.*) |*.* ";
+
+            saveFileBrowser.ShowDialog();
+
+            try
+            {
+                WriteTextToFile(saveFileBrowser.FileName, NoteTextBox1.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Encryption - Encrypt Current, Decrypt Current
+
+        private void encryptCurrentWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                keyForm popup = new keyForm();
+
+                popup.ShowDialog();
+                _currentSecurityModel = popup.getSecurityModel();
+
+                //build crypto tools based off user input
+                _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();
+                popup.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Popup failed : " + ex);
+                InitializeSecurityObjects();
+                return;
+            }
+
+            try
+            {
+                var encryptedText = CryptoManager.RunSelectedEncryption(_currentCryptoTools, NoteTextBox1.Text, _currentSecurityModel.Password);
+                NoteTextBox1.Text = encryptedText;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                InitializeSecurityObjects();
+                return;
+            }
+
+            InitializeSecurityObjects();
+        }
+
+        private void decryptCurrentWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                keyForm popup = new keyForm();
+                popup.ShowDialog();
+
+                _currentSecurityModel = popup.getSecurityModel();
+
+                //build crypto tools based off user input
+                _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();
+                popup.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Popup failed : " + ex);
+                InitializeSecurityObjects();
+                return;
+            }
+
+            try
+            {
+                var currentText = NoteTextBox1.Text;
+
+                //use password to decrypt
+                string decryptedText = CryptoManager.RunSelectedDecryption(_currentCryptoTools, currentText, _currentSecurityModel.Password);
+
+                NoteTextBox1.Text = decryptedText;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                InitializeSecurityObjects();
+                return;
+            }
+
+
+            //now that the text has been done reset security state
+            InitializeSecurityObjects();
+
+        }
+
+        #endregion
+
+        #region EXPERIMENTAL - Encrypt & Save, Decrypt & Open
 
         /// <summary>
         /// Open With Pin/Password.
@@ -89,16 +239,18 @@ namespace pinNote
                 _currentSecurityModel = popup.getSecurityModel();
 
                 //build crypto tools based off user input
-                _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();                
+                _currentCryptoTools = CryptoManager.BuildCryptoToolsFromSecurityModel(_currentSecurityModel).ToList();
                 popup.Dispose();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("popup failed : " + ex);
+                InitializeSecurityObjects();
+                return;
             }
 
             SaveFileDialog saveFileBrowser = new SaveFileDialog();
-            saveFileBrowser.ShowDialog();           
+            saveFileBrowser.ShowDialog();
 
             string encryptedText = string.Empty;
 
@@ -126,64 +278,17 @@ namespace pinNote
             InitializeSecurityObjects();
         }
 
-        #endregion Menu: w/ password
-
-
-        #region Menu: w/o password
-
-        /// <summary>
-        /// Open w/o pin/password.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OpenNoEncryption_Click(object sender, EventArgs e)
+        private void generateNewIVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //  'open a file browser
-            OpenFileDialog openFileBrowser = new OpenFileDialog();
-            openFileBrowser.ShowDialog();
-
-            string fileText = string.Empty;
-
-            try
-            {
-                fileText = GetFileContents(openFileBrowser.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            NoteTextBox1.Text = fileText;
-        }
-
-        /// <summary>
-        /// Save w/o pin/password
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveNoEncryption_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileBrowser = new SaveFileDialog();
-
-            saveFileBrowser.DefaultExt = ".txt";          
-            saveFileBrowser.Filter = " Text (*.txt) |*.txt| All Files (*.*) |*.* ";
-
-            saveFileBrowser.ShowDialog();           
-
-            try
-            {
-                WriteTextToFile(saveFileBrowser.FileName, NoteTextBox1.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            var generateIvPopup = new GenerateIVForm();
+            generateIvPopup.ShowDialog();
+            generateIvPopup.Dispose();            
         }
 
         #endregion
 
         #region Help Menu
-        
+
         /// <summary>
         /// Display the "About" message.
         /// </summary>
@@ -192,11 +297,10 @@ namespace pinNote
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("CryptoWriter"
-                + Environment.NewLine + " Created by Robert Humble"
+                + Environment.NewLine + " Created by Rob Humble"
                 + Environment.NewLine + " Contact: humbot1@gmail.com");
         }
         #endregion Help Menu
-
 
         #region Private Helpers
 
@@ -252,7 +356,7 @@ namespace pinNote
                 fileWriter.Close();
             }
             catch (Exception ex)
-            {               
+            {
                 throw new Exception("Error saving file: " + Environment.NewLine + ex);
             }
 
@@ -281,7 +385,11 @@ namespace pinNote
 
         }
 
+
+
+
         #endregion Private Helpers
+  
     }
 
 }

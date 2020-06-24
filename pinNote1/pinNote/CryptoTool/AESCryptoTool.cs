@@ -8,29 +8,26 @@ using System.Text;
 
 namespace pinNote.CryptoTool
 {
-    
-   
+
     //Based off of example found here: https://msdn.microsoft.com/en-us/library/system.security.cryptography.rijndaelmanaged.aspx
     public class AESCryptoTool : iCryptoTool
     {
         private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.AES;
 
-        //"salt"
-        private byte[] IV = Encoding.ASCII.GetBytes("v95da2y6d8xc3v2r") ; 
-
         private int keySize = 256;
-
 
         public string EncryptRun(string message, string password)
         {
-            byte[] encryptionResult; 
+            byte[] encryptionResult;
 
             //message as bytes
-           // byte[] messageBytes = Encoding.ASCII.GetBytes(message);
+            // byte[] messageBytes = Encoding.ASCII.GetBytes(message);
 
-            using(PasswordDeriveBytes pw = new PasswordDeriveBytes(password,IV))
+            var IV = GetCurrentIV();
+
+            using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
             {
-                byte[] pwBytes = pw.GetBytes(keySize/8);
+                byte[] pwBytes = pw.GetBytes(keySize / 8);
 
                 using (RijndaelManaged rij = new RijndaelManaged())
                 {
@@ -43,7 +40,7 @@ namespace pinNote.CryptoTool
                     {
                         using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                         {
-                            using(StreamWriter sw = new StreamWriter(cs))
+                            using (StreamWriter sw = new StreamWriter(cs))
                             {
                                 sw.Write(message);
                             }
@@ -53,18 +50,20 @@ namespace pinNote.CryptoTool
                 }
             }
 
-            return Convert.ToBase64String(encryptionResult);           
+            return Convert.ToBase64String(encryptionResult);
         }
 
 
         public string DecryptRun(string message, string password)
         {
-           string decryptionResult = null;
+            string decryptionResult = null;
 
-           //message as bytes
-           byte[] messageBytes = Convert.FromBase64String(message);// = Encoding.ASCII.GetBytes(message);
+            //message as bytes
+            byte[] messageBytes = Convert.FromBase64String(message);
 
-           using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
+            var IV = GetCurrentIV();
+
+            using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
             {
                 byte[] pwBytes = pw.GetBytes(keySize / 8);
 
@@ -81,9 +80,9 @@ namespace pinNote.CryptoTool
                         {
                             using (StreamReader sr = new StreamReader(cs))
                             {
-                                decryptionResult = sr.ReadToEnd(); 
+                                decryptionResult = sr.ReadToEnd();
                             }
-                           
+
                         }
                     }
                 }
@@ -95,6 +94,31 @@ namespace pinNote.CryptoTool
         public EncryptionTypeEnum GetEncryptionType()
         {
             return EncryptionType;
+        }
+
+        public byte[] GetCurrentIV()
+        {
+            var hardCoded = "v95da2y6d8xc3v2r";
+
+            var global = Properties.Settings.Default.CustomGlobalIV;
+            var customAes = Properties.Settings.Default.CustomAesIV;
+
+            var ivStr = (!string.IsNullOrEmpty(customAes))? customAes: (!string.IsNullOrEmpty(global)) ? global : hardCoded;
+
+            byte[] IV = Encoding.ASCII.GetBytes(ivStr);
+
+            return IV;
+        }
+
+        public string GenerateNewIVString() 
+        {
+            var r = new RijndaelManaged();
+            r.KeySize = keySize;
+            r.GenerateIV();
+
+            var ivStr = Encoding.ASCII.GetString(r.IV);
+
+            return ivStr;
         }
 
     }

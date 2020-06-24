@@ -7,6 +7,9 @@ using System.Text;
 
 namespace pinNote.CryptoTool
 {
+    /// <summary>
+    /// HumbleCrypt - Simple encryption strategy.
+    /// </summary>
     public class HumbleCryptoTool : iCryptoTool
     {
         private readonly EncryptionTypeEnum EncryptionType = EncryptionTypeEnum.Humble;
@@ -14,20 +17,22 @@ namespace pinNote.CryptoTool
         public string EncryptRun(string message, string password)
         {
             //Requires int
-
             int shiftBy = TransformHelper.PasswordStrToKeyInt(password);
 
-            String shiftedString = "";
             byte[] bytesToShift = Encoding.Unicode.GetBytes(message);
             //byte[] bytesToShift = Convert.FromBase64String(message);
 
-            int iterator = 0;
+            int byteCount = bytesToShift.Length;
 
-            foreach (byte b in message)
+            var shifted = new byte[byteCount];
+
+            for (int x = 0; x < byteCount; x++)
             {
+                var b = bytesToShift[x];
+
                 byte temp;
 
-                if (iterator % 2 == 0)
+                if (x % 2 == 0)
                 {
                     temp = (byte)(b + shiftBy);
                 }
@@ -36,10 +41,10 @@ namespace pinNote.CryptoTool
                     temp = (byte)(b - shiftBy);
                 }
 
-                shiftedString += Convert.ToChar(temp);
-
-                iterator++;
+                shifted[x] = temp;
             }
+
+            var shiftedString = Encoding.Unicode.GetString(shifted);
 
             return shiftedString;
         }
@@ -50,16 +55,19 @@ namespace pinNote.CryptoTool
             //Requires int
             int shiftBy = TransformHelper.PasswordStrToKeyInt(password);
 
-            String shiftedString = "";
             byte[] bytesToShift = Encoding.Unicode.GetBytes(message);
-            //byte[] bytesToShift = Convert.FromBase64String(message);
-            int iterator = 0;
+            //byte[] bytesToShift = Convert.FromBase64String(message);           
 
-            foreach (byte b in message)
+            int byteCount = bytesToShift.Length;
+            var shifted = new byte[byteCount];
+
+            for (int x = 0; x < byteCount; x++)
             {
+                var b = bytesToShift[x];
+
                 byte temp;
 
-                if (iterator % 2 == 0)
+                if (x % 2 == 0)
                 {
                     temp = (byte)(b - shiftBy);
                 }
@@ -68,12 +76,10 @@ namespace pinNote.CryptoTool
                     temp = (byte)(b + shiftBy);
                 }
 
-                shiftedString += Convert.ToChar(temp);
-
-                iterator++;
+                shifted[x] = temp;
             }
 
-
+            var shiftedString = Encoding.Unicode.GetString(shifted);
 
             return shiftedString;
         }
@@ -83,5 +89,14 @@ namespace pinNote.CryptoTool
             return EncryptionType;
         }
 
+        public byte[] GetCurrentIV()
+        {
+            return null;
+        }
+
+        public string GenerateNewIVString()
+        {
+            return string.Empty;
+        }
     }
 }
