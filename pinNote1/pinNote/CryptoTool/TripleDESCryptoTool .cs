@@ -98,14 +98,14 @@ namespace pinNote.CryptoTool
 
         public byte[] GetCurrentIV()
         {
-            var hardCoded = "3d5jxa22";
+            var hardCoded = "c2/8PUyajsE=";
 
             var global = Properties.Settings.Default.CustomGlobalIV;
             var customTripleDES = Properties.Settings.Default.CustomTripleDesIV;
 
             var ivStr = (!string.IsNullOrEmpty(customTripleDES)) ? customTripleDES : (!string.IsNullOrEmpty(global)) ? global : hardCoded;
 
-            byte[] IV = Encoding.ASCII.GetBytes(ivStr);
+            byte[] IV = Convert.FromBase64String(ivStr);
 
             return IV;
         }
@@ -116,7 +116,8 @@ namespace pinNote.CryptoTool
             tdes.KeySize = keySize;
             tdes.GenerateIV();
 
-            var ivStr = Encoding.ASCII.GetString(tdes.IV);
+            var ivStr = Convert.ToBase64String(tdes.IV);
+           
 
             return ivStr;
         }
