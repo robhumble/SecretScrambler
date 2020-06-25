@@ -21,6 +21,9 @@ namespace pinNote
 
         private List<iCryptoTool> _currentCryptoTools;
 
+        public string _currentFileName;
+
+
         public NoteWindow()
         {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace pinNote
             if (confirmWindowResult == DialogResult.Yes)
             {
                 NoteTextBox1.Text = string.Empty;
+                ClearCurrentFile();
                 InitializeSecurityObjects();
             }         
         }
@@ -51,7 +55,7 @@ namespace pinNote
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OpenNoEncryption_Click(object sender, EventArgs e)
+        private void Open_Click(object sender, EventArgs e)
         {
             //  'open a file browser
             OpenFileDialog openFileBrowser = new OpenFileDialog();
@@ -69,15 +73,37 @@ namespace pinNote
                 MessageBox.Show(ex.Message);
             }
 
-            
+            SetCurrentFile( openFileBrowser.FileName);            
         }
 
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_currentFileName))
+            {
+                SaveAs_Click(sender, e);
+            }
+            else
+            {
+                try
+                {
+                    WriteTextToFile(_currentFileName, NoteTextBox1.Text);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+
         /// <summary>
-        /// Save current window text.
+        /// Save As current window text.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SaveNoEncryption_Click(object sender, EventArgs e)
+        private void SaveAs_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileBrowser = new SaveFileDialog();
 
@@ -94,6 +120,8 @@ namespace pinNote
             {
                 MessageBox.Show(ex.Message);
             }
+
+            SetCurrentFile(saveFileBrowser.FileName);
         }
 
         #endregion
@@ -232,6 +260,7 @@ namespace pinNote
 
             //now that the text has been done reset security state
             InitializeSecurityObjects();
+            SetCurrentFile(openFileBrowser.FileName);
         }
 
         /// <summary>
@@ -286,6 +315,7 @@ namespace pinNote
 
             //now that the text has been done reset security state
             InitializeSecurityObjects();
+            SetCurrentFile(saveFileBrowser.FileName);
         }
 
         /// <summary>
@@ -313,7 +343,11 @@ namespace pinNote
         {
             MessageBox.Show("CryptoWriter"
                 + Environment.NewLine + " Created by Rob Humble"
-                + Environment.NewLine + " Contact: humbot1@gmail.com");
+                + Environment.NewLine + " Contact: humbot1@gmail.com"
+                + Environment.NewLine 
+                + Environment.NewLine + " MIT License"
+                + Environment.NewLine + "Copyright(c) 2020 Robert Humble"
+                );
         }
 
         #endregion Help Menu
@@ -386,6 +420,18 @@ namespace pinNote
             noteText = NoteTextBox1.Text;
         }
 
+        private void SetCurrentFile(string fileName)
+        {
+            _currentFileName = fileName;
+            this.Text = "pinNote ~" + fileName;
+        }
+
+        private void ClearCurrentFile()
+        {
+            _currentFileName = string.Empty;
+            this.Text = "pinNote";
+        }
+
         private void DebugRecorder(String inBound)
         {
             bool use = false;
@@ -401,8 +447,7 @@ namespace pinNote
 
         }
 
-        #endregion Private Helpers
-  
+        #endregion Private Helpers        
     }
 
 }

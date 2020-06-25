@@ -43,6 +43,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NoteTextBox1 = new System.Windows.Forms.TextBox();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +58,7 @@
             this.helpToolStripMenuItem});
             this.MainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MainMenuStrip.Name = "MainMenuStrip";
-            this.MainMenuStrip.Size = new System.Drawing.Size(938, 36);
+            this.MainMenuStrip.Size = new System.Drawing.Size(938, 33);
             this.MainMenuStrip.TabIndex = 1;
             this.MainMenuStrip.Text = "menuStrip1";
             // 
@@ -66,9 +67,10 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.opennoEncryptionToolStripMenuItem,
+            this.saveToolStripMenuItem,
             this.savenormalToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -83,14 +85,14 @@
             this.opennoEncryptionToolStripMenuItem.Name = "opennoEncryptionToolStripMenuItem";
             this.opennoEncryptionToolStripMenuItem.Size = new System.Drawing.Size(188, 34);
             this.opennoEncryptionToolStripMenuItem.Text = "Open";
-            this.opennoEncryptionToolStripMenuItem.Click += new System.EventHandler(this.OpenNoEncryption_Click);
+            this.opennoEncryptionToolStripMenuItem.Click += new System.EventHandler(this.Open_Click);
             // 
             // savenormalToolStripMenuItem
             // 
             this.savenormalToolStripMenuItem.Name = "savenormalToolStripMenuItem";
             this.savenormalToolStripMenuItem.Size = new System.Drawing.Size(188, 34);
             this.savenormalToolStripMenuItem.Text = "Save As...";
-            this.savenormalToolStripMenuItem.Click += new System.EventHandler(this.SaveNoEncryption_Click);
+            this.savenormalToolStripMenuItem.Click += new System.EventHandler(this.SaveAs_Click);
             // 
             // encryptionToolStripMenuItem1
             // 
@@ -173,6 +175,13 @@
             this.NoteTextBox1.Size = new System.Drawing.Size(900, 638);
             this.NoteTextBox1.TabIndex = 2;
             // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
             // NoteWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -207,6 +216,7 @@
         private System.Windows.Forms.ToolStripMenuItem encryptCurrentWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decryptCurrentWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateNewIVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
     }
 }
 
