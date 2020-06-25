@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using pinNote.CryptoTool;
-using pinNote.Logic;
-using pinNote.Models;
+using SecretScrambler.CryptoTool;
+using SecretScrambler.Logic;
+using SecretScrambler.Models;
 
-namespace pinNoteUnitTest.LogicTests
+namespace SecretScramblerUnitTest.LogicTests
 {
     [TestClass]
     public class CryptoManagerTests

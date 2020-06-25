@@ -1,4 +1,4 @@
-﻿namespace pinNote
+﻿namespace SecretScrambler
 {
     partial class NoteWindow
     {
@@ -191,7 +191,7 @@
             this.Controls.Add(this.MainMenuStrip);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "NoteWindow";
-            this.Text = "pinNote";
+            this.Text = "SecretScrambler";
             this.MainMenuStrip.ResumeLayout(false);
             this.MainMenuStrip.PerformLayout();
             this.ResumeLayout(false);

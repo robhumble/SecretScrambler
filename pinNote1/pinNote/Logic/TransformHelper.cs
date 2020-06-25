@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace pinNote.Logic
+namespace SecretScrambler.Logic
 {
     /// <summary>
     ///Helps transform data, assistance for crypto tools
@@ -11,7 +11,7 @@ namespace pinNote.Logic
     public static class TransformHelper
     {
         /// <summary>
-        /// Get an integer representation of a password.
+        /// Get an integer representation of a password.  Essentially a hash function (string -> int).
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
@@ -19,7 +19,9 @@ namespace pinNote.Logic
         {
             int returnKey = 0;
 
-            int x = 0;
+            int x = 0;           
+
+            int finalSpice = 0;
 
             //orignally wanted this to work like this 
             //a=1,b=2, c=3
@@ -27,15 +29,40 @@ namespace pinNote.Logic
             //x=123, but this might work out fine
             foreach (char c in password)
             {
-                int val = (int)char.GetNumericValue(c);
+                int val = Convert.ToInt32(c);             
 
-                //TODO: this logic is not exactly what I wanted, may need to re-evaluate
-                returnKey += val * (int)Math.Pow(10, x);
+                returnKey += (val / password.Length) + x;
+
+                finalSpice += val % 3;
 
                 x++;
+            }        
+
+            var result = returnKey + finalSpice;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Attempt to get a hash/key below a target value.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="key"></param>
+        /// <param name="chipAway"></param>
+        /// <returns></returns>
+        private static int GetBelow(int target, int key, int chipAway)
+        {
+            int newKey = Math.Abs(key);
+
+            while (Math.Abs(newKey) > target)
+            {
+                if (Math.Abs(newKey) > target * 10)
+                    newKey = Math.Abs(newKey) / 10;
+                else
+                    newKey -= chipAway;              
             }
 
-            return returnKey;
+            return newKey;
         }
 
         /// <summary>

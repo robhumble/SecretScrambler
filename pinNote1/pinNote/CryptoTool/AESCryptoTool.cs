@@ -1,4 +1,4 @@
-﻿using pinNote.Enums;
+﻿using SecretScrambler.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace pinNote.CryptoTool
+namespace SecretScrambler.CryptoTool
 {
 
     //Based off of example found here: https://msdn.microsoft.com/en-us/library/system.security.cryptography.rijndaelmanaged.aspx

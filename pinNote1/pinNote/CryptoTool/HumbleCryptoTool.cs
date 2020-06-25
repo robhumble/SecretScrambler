@@ -1,11 +1,11 @@
-﻿using pinNote.Enums;
-using pinNote.Logic;
+﻿using SecretScrambler.Enums;
+using SecretScrambler.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace pinNote.CryptoTool
+namespace SecretScrambler.CryptoTool
 {
     /// <summary>
     /// HumbleCrypt - Simple encryption strategy.

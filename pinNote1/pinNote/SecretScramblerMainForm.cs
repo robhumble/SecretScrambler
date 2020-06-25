@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using pinNote.CryptoTool;
-using pinNote.Models;
-using pinNote.Logic;
+using SecretScrambler.CryptoTool;
+using SecretScrambler.Models;
+using SecretScrambler.Logic;
 
-namespace pinNote
+namespace SecretScrambler
 {
     public partial class NoteWindow : Form
     {
@@ -341,7 +341,7 @@ namespace pinNote
         /// <param name="e"></param>
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("CryptoWriter"
+            MessageBox.Show("SecretScrambler"
                 + Environment.NewLine + " Created by Rob Humble"
                 + Environment.NewLine + " Contact: humbot1@gmail.com"
                 + Environment.NewLine 
@@ -423,13 +423,13 @@ namespace pinNote
         private void SetCurrentFile(string fileName)
         {
             _currentFileName = fileName;
-            this.Text = "pinNote ~" + fileName;
+            this.Text = "SecretScrambler ~" + fileName;
         }
 
         private void ClearCurrentFile()
         {
             _currentFileName = string.Empty;
-            this.Text = "pinNote";
+            this.Text = "SecretScrambler";
         }
 
         private void DebugRecorder(String inBound)

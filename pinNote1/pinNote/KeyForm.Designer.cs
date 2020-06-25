@@ -1,4 +1,4 @@
-﻿namespace pinNote
+﻿namespace SecretScrambler
 {
     partial class keyForm
     {

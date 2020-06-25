@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using pinNote.CryptoTool;
+using SecretScrambler.CryptoTool;
 
-namespace pinNoteUnitTest.CryptoToolTests
+namespace SecretScramblerUnitTest.CryptoToolTests
 {
     [TestClass]
     public class AESCryptoToolTests

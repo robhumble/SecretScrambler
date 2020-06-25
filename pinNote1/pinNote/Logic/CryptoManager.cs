@@ -1,11 +1,11 @@
-﻿using pinNote.CryptoTool;
-using pinNote.Models;
+﻿using SecretScrambler.CryptoTool;
+using SecretScrambler.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace pinNote.Logic
+namespace SecretScrambler.Logic
 {
     public static class CryptoManager
     {

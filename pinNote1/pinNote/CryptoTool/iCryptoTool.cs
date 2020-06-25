@@ -1,10 +1,10 @@
-﻿using pinNote.Enums;
+﻿using SecretScrambler.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace pinNote.CryptoTool
+namespace SecretScrambler.CryptoTool
 {
     public interface iCryptoTool
     {
