@@ -2,13 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="pinNote.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="CustomGlobalIV" Type="System.String" Scope="User">
+    <Setting Name="CustomAesIV" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="CustomAesIV" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="CustomTripleDesIV" Type="System.String" Scope="User">
+    <Setting Name="CustomTripleDesIV" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

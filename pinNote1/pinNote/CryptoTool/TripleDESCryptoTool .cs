@@ -100,10 +100,9 @@ namespace pinNote.CryptoTool
         {
             var hardCoded = "c2/8PUyajsE=";
 
-            var global = Properties.Settings.Default.CustomGlobalIV;
             var customTripleDES = Properties.Settings.Default.CustomTripleDesIV;
 
-            var ivStr = (!string.IsNullOrEmpty(customTripleDES)) ? customTripleDES : (!string.IsNullOrEmpty(global)) ? global : hardCoded;
+            var ivStr = (!string.IsNullOrEmpty(customTripleDES)) ? customTripleDES : hardCoded;
 
             byte[] IV = Convert.FromBase64String(ivStr);
 

@@ -23,39 +23,21 @@ namespace pinNote.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CustomGlobalIV {
-            get {
-                return ((string)(this["CustomGlobalIV"]));
-            }
-            set {
-                this["CustomGlobalIV"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CustomAesIV {
             get {
                 return ((string)(this["CustomAesIV"]));
             }
-            set {
-                this["CustomAesIV"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CustomTripleDesIV {
             get {
                 return ((string)(this["CustomTripleDesIV"]));
-            }
-            set {
-                this["CustomTripleDesIV"] = value;
             }
         }
     }

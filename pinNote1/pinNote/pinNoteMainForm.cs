@@ -100,6 +100,11 @@ namespace pinNote
 
         #region Encryption - Encrypt Current, Decrypt Current
 
+        /// <summary>
+        /// Encrypt the text currently in the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void encryptCurrentWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -135,6 +140,11 @@ namespace pinNote
             InitializeSecurityObjects();
         }
 
+        /// <summary>
+        /// Decrypt the text currently in the window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void decryptCurrentWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -278,6 +288,11 @@ namespace pinNote
             InitializeSecurityObjects();
         }
 
+        /// <summary>
+        /// Show the GenerateIV Form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void generateNewIVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var generateIvPopup = new GenerateIVForm();
@@ -300,6 +315,7 @@ namespace pinNote
                 + Environment.NewLine + " Created by Rob Humble"
                 + Environment.NewLine + " Contact: humbot1@gmail.com");
         }
+
         #endregion Help Menu
 
         #region Private Helpers
@@ -384,9 +400,6 @@ namespace pinNote
             }
 
         }
-
-
-
 
         #endregion Private Helpers
   

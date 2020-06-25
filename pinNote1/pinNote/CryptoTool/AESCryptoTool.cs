@@ -99,11 +99,10 @@ namespace pinNote.CryptoTool
         public byte[] GetCurrentIV()
         {
             var hardCoded = "TI4x/aqsVRCQ5b52etPXlQ==";
-
-            var global = Properties.Settings.Default.CustomGlobalIV;
+            
             var customAes = Properties.Settings.Default.CustomAesIV;
 
-            var ivStr = (!string.IsNullOrEmpty(customAes))? customAes: (!string.IsNullOrEmpty(global)) ? global : hardCoded;
+            var ivStr = (!string.IsNullOrEmpty(customAes)) ? customAes : hardCoded;
 
             byte[] IV = Convert.FromBase64String(ivStr);
 
