@@ -1,2 +1,2 @@
-# HiddenNotes
+# SecretScrambler
 Encryption Note pad application
