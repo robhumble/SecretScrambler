@@ -1,6 +1,7 @@
 ﻿using SecretScrambler.Enums;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -99,8 +100,9 @@ namespace SecretScrambler.CryptoTool
         public byte[] GetCurrentIV()
         {
             var hardCoded = "TI4x/aqsVRCQ5b52etPXlQ==";
-            
-            var customAes = Properties.Settings.Default.CustomAesIV;
+
+            var customAes = ConfigurationManager.AppSettings["CustomAesIV"];
+
 
             var ivStr = (!string.IsNullOrEmpty(customAes)) ? customAes : hardCoded;
 

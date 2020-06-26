@@ -1,6 +1,7 @@
 ﻿using SecretScrambler.Enums;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -99,8 +100,8 @@ namespace SecretScrambler.CryptoTool
         public byte[] GetCurrentIV()
         {
             var hardCoded = "c2/8PUyajsE=";
-
-            var customTripleDES = Properties.Settings.Default.CustomTripleDesIV;
+           
+            var customTripleDES = ConfigurationManager.AppSettings["CustomTripleDesIV"];
 
             var ivStr = (!string.IsNullOrEmpty(customTripleDES)) ? customTripleDES : hardCoded;
 

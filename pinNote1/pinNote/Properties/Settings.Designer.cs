@@ -22,23 +22,5 @@ namespace SecretScrambler.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CustomAesIV {
-            get {
-                return ((string)(this["CustomAesIV"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CustomTripleDesIV {
-            get {
-                return ((string)(this["CustomTripleDesIV"]));
-            }
-        }
     }
 }
