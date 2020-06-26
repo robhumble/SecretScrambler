@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(keyForm));
             this.EnterKeyMessage = new System.Windows.Forms.Label();
             this.keyBox = new System.Windows.Forms.TextBox();
             this.keyButton = new System.Windows.Forms.Button();
@@ -41,27 +42,24 @@
             // 
             this.EnterKeyMessage.AutoSize = true;
             this.EnterKeyMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EnterKeyMessage.Location = new System.Drawing.Point(22, 178);
-            this.EnterKeyMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.EnterKeyMessage.Location = new System.Drawing.Point(15, 116);
             this.EnterKeyMessage.Name = "EnterKeyMessage";
-            this.EnterKeyMessage.Size = new System.Drawing.Size(266, 20);
+            this.EnterKeyMessage.Size = new System.Drawing.Size(180, 13);
             this.EnterKeyMessage.TabIndex = 0;
             this.EnterKeyMessage.Text = "Please provide your password.";
             // 
             // keyBox
             // 
-            this.keyBox.Location = new System.Drawing.Point(27, 217);
-            this.keyBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.keyBox.Location = new System.Drawing.Point(18, 141);
             this.keyBox.Name = "keyBox";
-            this.keyBox.Size = new System.Drawing.Size(259, 26);
+            this.keyBox.Size = new System.Drawing.Size(174, 20);
             this.keyBox.TabIndex = 1;
             // 
             // keyButton
             // 
-            this.keyButton.Location = new System.Drawing.Point(27, 257);
-            this.keyButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.keyButton.Location = new System.Drawing.Point(18, 167);
             this.keyButton.Name = "keyButton";
-            this.keyButton.Size = new System.Drawing.Size(261, 35);
+            this.keyButton.Size = new System.Drawing.Size(174, 23);
             this.keyButton.TabIndex = 2;
             this.keyButton.Text = "Apply";
             this.keyButton.UseVisualStyleBackColor = true;
@@ -71,10 +69,9 @@
             // 
             this.EncryptionSelectLabel.AutoSize = true;
             this.EncryptionSelectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EncryptionSelectLabel.Location = new System.Drawing.Point(27, 20);
-            this.EncryptionSelectLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.EncryptionSelectLabel.Location = new System.Drawing.Point(18, 13);
             this.EncryptionSelectLabel.Name = "EncryptionSelectLabel";
-            this.EncryptionSelectLabel.Size = new System.Drawing.Size(273, 20);
+            this.EncryptionSelectLabel.Size = new System.Drawing.Size(184, 13);
             this.EncryptionSelectLabel.TabIndex = 3;
             this.EncryptionSelectLabel.Text = "Please select encryption types:";
             // 
@@ -83,10 +80,9 @@
             this.AESCheckbox.AutoSize = true;
             this.AESCheckbox.Checked = true;
             this.AESCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AESCheckbox.Location = new System.Drawing.Point(32, 46);
-            this.AESCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AESCheckbox.Location = new System.Drawing.Point(21, 30);
             this.AESCheckbox.Name = "AESCheckbox";
-            this.AESCheckbox.Size = new System.Drawing.Size(68, 24);
+            this.AESCheckbox.Size = new System.Drawing.Size(47, 17);
             this.AESCheckbox.TabIndex = 4;
             this.AESCheckbox.Text = "AES";
             this.AESCheckbox.UseVisualStyleBackColor = true;
@@ -94,10 +90,9 @@
             // TripleDESCheckbox
             // 
             this.TripleDESCheckbox.AutoSize = true;
-            this.TripleDESCheckbox.Location = new System.Drawing.Point(32, 83);
-            this.TripleDESCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TripleDESCheckbox.Location = new System.Drawing.Point(21, 54);
             this.TripleDESCheckbox.Name = "TripleDESCheckbox";
-            this.TripleDESCheckbox.Size = new System.Drawing.Size(111, 24);
+            this.TripleDESCheckbox.Size = new System.Drawing.Size(77, 17);
             this.TripleDESCheckbox.TabIndex = 5;
             this.TripleDESCheckbox.Text = "Triple DES";
             this.TripleDESCheckbox.UseVisualStyleBackColor = true;
@@ -105,19 +100,18 @@
             // HumbleCryptCheckbox
             // 
             this.HumbleCryptCheckbox.AutoSize = true;
-            this.HumbleCryptCheckbox.Location = new System.Drawing.Point(32, 120);
-            this.HumbleCryptCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.HumbleCryptCheckbox.Location = new System.Drawing.Point(21, 78);
             this.HumbleCryptCheckbox.Name = "HumbleCryptCheckbox";
-            this.HumbleCryptCheckbox.Size = new System.Drawing.Size(127, 24);
+            this.HumbleCryptCheckbox.Size = new System.Drawing.Size(86, 17);
             this.HumbleCryptCheckbox.TabIndex = 6;
             this.HumbleCryptCheckbox.Text = "HumbleCrypt";
             this.HumbleCryptCheckbox.UseVisualStyleBackColor = true;
             // 
             // keyForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(303, 311);
+            this.ClientSize = new System.Drawing.Size(202, 202);
             this.Controls.Add(this.HumbleCryptCheckbox);
             this.Controls.Add(this.TripleDESCheckbox);
             this.Controls.Add(this.AESCheckbox);
@@ -125,7 +119,7 @@
             this.Controls.Add(this.keyButton);
             this.Controls.Add(this.keyBox);
             this.Controls.Add(this.EnterKeyMessage);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "keyForm";
             this.Text = "Password";
             this.ResumeLayout(false);
