@@ -9,6 +9,7 @@ SecretScrambler gives you the option to layer different types of encryption on t
 
 ## Downloads
 [Installer](https://github.com/rh1269/SecretScrambler/releases/download/1/SecretScrambler_Installer.zip)
+
 [Portable](https://github.com/rh1269/SecretScrambler/releases/download/1/SecretScrambler_Portable.zip)
 
 
