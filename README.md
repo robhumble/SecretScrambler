@@ -9,7 +9,7 @@ SecretScrambler gives you the option to layer different types of encryption on t
 
 ### Looking for application support?
 
-If your having any issue please [contact support](humbot1@gmail.com).
+If your having any issue please [contact support](mailto:humbot1@gmail.com).
 
 ### Looking for other projects?
 
