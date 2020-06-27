@@ -65,6 +65,7 @@ namespace SecretScrambler.Logic
             return newKey;
         }
 
+        [Obsolete("Unused - Don't use until more testing is done.")]
         /// <summary>
         /// Ascii byte array - unused
         /// </summary>
@@ -83,6 +84,7 @@ namespace SecretScrambler.Logic
             return inAscii;
         }
 
+        [Obsolete("Unused - Don't use until more testing is done.")]
         /// <summary>
         /// Get a valid int - unused
         /// </summary>
@@ -99,24 +101,17 @@ namespace SecretScrambler.Logic
                 {
                     validnumber = validnumber + 255;
                 }
-            }
-
-            // if (validnumber > 255)
-            // {
-            //  while (validnumber > 255)
-            //{
-            //    validnumber = validnumber - 255;
-            // }
-            //  }
+            }           
 
             if (validnumber > 255 || validnumber < 0)
             {
-                //MessageBox.Show("this is a bad number: " + validnumber);
+                Console.WriteLine("this is a bad number: " + validnumber);
             }
             return validnumber;
 
         }
 
+        [Obsolete("Unused - Don't use until more testing is done.")]
         /// <summary>
         /// get revised key - unused
         /// </summary>
@@ -124,44 +119,17 @@ namespace SecretScrambler.Logic
         /// <returns></returns>
         public static int GetRevisedKey(int currentKey)
         {
-            int revisedKey = currentKey;
-            /*
-               int divBy = currentKey % 3;
+            int revisedKey = currentKey;          
 
-               if (divBy < 2)
-               {
-                   //divBy = 10; 
-                   return 255;
-               }
-
-               while (revisedKey > 255)
-               {
-                   revisedKey = revisedKey / divBy;
-               }
-               */
-
-            //- ------------------------------
-
-            double doubleKey = Convert.ToDouble(revisedKey);
-            // double subBy = revisedKey * .255;
-
-            // while (doubleKey > 255)
-            //  {
-            //       doubleKey = doubleKey - subBy;
-            // }
-
+            double doubleKey = Convert.ToDouble(revisedKey);           
 
             if (doubleKey < 0)
             {
                 doubleKey += 255;
             }
 
-
-
-            return Convert.ToInt32(doubleKey);
-            //return 1;
+            return Convert.ToInt32(doubleKey);           
         }
-
 
     }
 }
