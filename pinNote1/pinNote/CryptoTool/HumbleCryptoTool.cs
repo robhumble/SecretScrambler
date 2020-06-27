@@ -8,7 +8,7 @@ using System.Text;
 namespace SecretScrambler.CryptoTool
 {
     /// <summary>
-    /// HumbleCrypt - Simple encryption strategy.
+    /// HumbleCrypt - Quick, Simple, Basic Encryption strategy.  Significantly less secure than the other CryptoTools.
     /// </summary>
     public class HumbleCryptoTool : iCryptoTool
     {
@@ -20,7 +20,6 @@ namespace SecretScrambler.CryptoTool
             int shiftBy = TransformHelper.PasswordStrToKeyInt(password);
 
             byte[] bytesToShift = Encoding.Unicode.GetBytes(message);
-            //byte[] bytesToShift = Convert.FromBase64String(message);
 
             int byteCount = bytesToShift.Length;
 
@@ -56,7 +55,6 @@ namespace SecretScrambler.CryptoTool
             int shiftBy = TransformHelper.PasswordStrToKeyInt(password);
 
             byte[] bytesToShift = Encoding.Unicode.GetBytes(message);
-            //byte[] bytesToShift = Convert.FromBase64String(message);           
 
             int byteCount = bytesToShift.Length;
             var shifted = new byte[byteCount];

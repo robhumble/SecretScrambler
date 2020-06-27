@@ -18,15 +18,15 @@ namespace SecretScrambler.Logic
         {
             var cryptoTools = new List<iCryptoTool>();
 
-            if (securityModel.SelectedAES)
-                cryptoTools.Add(new AESCryptoTool());
+            if (securityModel.SelectedHumbleCrypt)
+                cryptoTools.Add(new HumbleCryptoTool());
 
             if (securityModel.SelectedTripleDES)
                 cryptoTools.Add(new TripleDESCryptoTool());
 
-            if (securityModel.SelectedHumbleCrypt)
-                cryptoTools.Add(new HumbleCryptoTool());
-           
+            if (securityModel.SelectedAES)
+                cryptoTools.Add(new AESCryptoTool());          
+          
             return cryptoTools;
         }
 

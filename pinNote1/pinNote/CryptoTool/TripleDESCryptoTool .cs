@@ -21,9 +21,6 @@ namespace SecretScrambler.CryptoTool
         {
             byte[] encryptionResult;
 
-            //message as bytes
-            //byte[] messageBytes = Encoding.ASCII.GetBytes(message);
-
             var IV = GetCurrentIV();
 
             using (PasswordDeriveBytes pw = new PasswordDeriveBytes(password, IV))
